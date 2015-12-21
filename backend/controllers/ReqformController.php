@@ -146,49 +146,47 @@ class ReqformController extends Controller
     }
 
 
-       public function actionAudit($id)
+    public function actionAudit($id)
     {
-        $model = $this->findModel($id);
-        $reqFormFactory = new ReqFormFactory();
-        $reqForm = $reqFormFactory->createRequest($model);
+            $model = $this->findModel($id);
+            $reqFormFactory = new ReqFormFactory();
+            $reqForm = $reqFormFactory->createRequest($model);
 
-        if ($post = Yii::$app->request->post()) {
+            if ($post = Yii::$app->request->post()) {
 
-           $reqForm->setHandleDepart($post['handle']);
-           $reqForm->audit(); 
+                   $reqForm->setHandleDepart($post['handle']);
+                   $reqForm->audit(); 
 
-            if($reqForm->save())
-            {
-                $record = ['act'=>'审批','note'=>$post['msg']];
-                $reqForm->addRecord($record); 
-                $this->redirect(['reqform/index']);
+                    if($reqForm->save())
+                    {
+                            $record = ['act'=>'审批','note'=>$post['msg']];
+                            $reqForm->addRecord($record); 
+                            $this->redirect(['reqform/index']);
+                    }else{
+                            exit('Unexpected Error!');
+                    }     
             }else{
-                exit('Unexpected Error!');
+                $view = 'audit';
+                return $this->render($view, [
+                         'model' => $reqForm->getMainData(),
+                         'subModel'=>$reqForm->getSubData(),
+                         'handle'=>$reqForm->getHandleOption(),
+                ]);
             }
-            
-        }else{
-
-            $view = 'audit';
-            return $this->render($view, [
-                'model' => $reqForm->getMainData(),
-                'subModel'=>$reqForm->getSubData(),
-                'handle'=>$reqForm->getHandleOption(),
-            ]);
-        }
     }
 
     public function actionHandle($id)
     {
-        $model = $this->findModel($id);
-        //$purchase = new PurchaseRequest();
-        $reqFormFactory = new ReqFormFactory();
-        $reqForm = $reqFormFactory->createRequest($model);
+            $model = $this->findModel($id);
+            //$purchase = new PurchaseRequest();
+            $reqFormFactory = new ReqFormFactory();
+            $reqForm = $reqFormFactory->createRequest($model);
 
-         return $this->render('handle', [
-                'model' => $reqForm->getMainData(),
-                'subModel'=>$reqForm->getSubData(),
-                'handle'=>$reqForm->getHandleOption(),
-            ]);
+             return $this->render('handle', [
+                    'model' => $reqForm->getMainData(),
+                    'subModel'=>$reqForm->getSubData(),
+                    'handle'=>$reqForm->getHandleOption(),
+                ]);
     }
 
 

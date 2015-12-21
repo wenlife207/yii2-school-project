@@ -108,21 +108,14 @@ class PurchaseRequest extends ReqformHandle
 	public function getHandleOption()
 	{
 		$opr_array = array();
-		//$duty = $this->initDuty();
-		//if ($duty->checkDuty('delete')) {
-			$opr_array[] = ConfigParam::getConfig('operations',null,'delete');
-		//}
-		//if ($duty->checkDuty('update')) {
-			$opr_array[] = ConfigParam::getConfig('operations',null,'update');
-		//}
-		//if ($this->mainData->state) {
-			$opr = $this->processType[$this->mainData->state];
-		//	if ($duty->checkDuty($opr)) {
-				$opr_array[] = ConfigParam::getConfig('operations',null,$opr);
-		//	}
-		//}else{
-		//	exit('mainData state not found! @_@ by handleoption in purchaseRequest');
-		//}
+
+		$opr_array[] = ConfigParam::getConfig('operations',null,'delete');
+
+		$opr_array[] = ConfigParam::getConfig('operations',null,'update');
+
+		$opr = $this->processType[$this->mainData->state];
+		
+		$opr_array[] = ConfigParam::getConfig('operations',null,$opr);
 
 		return $opr_array;
 		
